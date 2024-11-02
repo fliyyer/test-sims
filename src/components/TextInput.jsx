@@ -5,7 +5,7 @@ const TextInput = ({ type = "text", placeholder, icon: Icon, ...props }) => {
             <input
                 type={type}
                 placeholder={placeholder}
-                className="w-full pl-10 p-4 border text-secondary text-sm border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full pl-10 p-[14px] border text-secondary text-sm border-gray-400 rounded-md focus:outline-none focus:ring-1 focus:ring-primary"
                 {...props}
             />
         </div>

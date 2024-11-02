@@ -1,6 +1,8 @@
 import { Fragment } from "react"
 import Navbar from "../components/Navbar"
 import HeaderHome from "../components/HeaderHome"
+import ContentHome from "../components/ContentHome"
+import { Outlet } from "react-router-dom"
 
 const HomePage = () => {
     return (
@@ -8,6 +10,7 @@ const HomePage = () => {
             <Navbar />
             <main className="w-full max-w-7xl mx-auto">
                 <HeaderHome />
+                <Outlet />
             </main>
         </Fragment>
     )
