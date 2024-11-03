@@ -24,7 +24,7 @@ const ContentHome = () => {
         <main className="flex my-12 flex-col">
             <div className="flex w-full flex-wrap justify-between gap-2">
                 {menus.map((menu, index) => (
-                    <Link to={menu.route} className="cursor-pointer flex flex-col items-center" key={index}>
+                    <Link to={`/payment${menu.route}`} className="cursor-pointer flex flex-col items-center" key={index}>
                         <img className="w-[70px]" src={menu.icon} alt={menu.title} />
                         <div className="text-center text-secondary flex flex-col items-center text-wrap text-sm mt-2">
                             {menu.title.split(' ').map((word, wordIndex) => (

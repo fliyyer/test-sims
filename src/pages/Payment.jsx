@@ -1,27 +1,61 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdOutlineMoney } from "react-icons/md";
-import Listrik from '../assets/icons/Listrik.png';
 import TextInput from '../components/TextInput';
+import { useParams } from 'react-router-dom';
+import { getBalance, getServices, submitTransaction } from '../api/user';
+import PopupPayment from '../components/PopupPayment';
 
-const Payment = () => {
+const Payment = ({ token }) => {
+    const { serviceCode } = useParams();
+    const [service, setService] = useState('');
     const [amount, setAmount] = useState('');
+    const [showPopup, setShowPopup] = useState(false);
+    const [paymentStatus, setPaymentStatus] = useState(null);
 
-    const handleAmountChange = (e) => {
-        setAmount(e.target.value);
+    useEffect(() => {
+        const dataService = async () => {
+            try {
+                const services = await getServices();
+                const selectedService = services.find(s => s.route === `/${serviceCode}`);
+                setService(selectedService);
+                setAmount(selectedService.tariff);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        dataService();
+    }, [serviceCode]);
+
+    const handleConfirmPayment = async () => {
+        const service_code = serviceCode.toUpperCase();
+        try {
+            const balance = await getBalance(token);
+            if (balance >= amount) {
+                const response = await submitTransaction(service_code, token);
+                console.log(`Transaksi Berhasil! Invoice: ${response.invoice_number}`);
+                setPaymentStatus("success");
+            } else {
+                setPaymentStatus("failure");
+            }
+        } catch (error) {
+            console.error("Payment failed:", error);
+            setPaymentStatus("failure");
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Nominal Pembayaran:', amount);
-        setAmount('');
+        setShowPopup(true);
     };
+
+    if (!service) return <div>Loading...</div>;
 
     return (
         <section>
             <p className='text-lg text-secondary'>Pembayaran</p>
             <div className='flex gap-4 items-center'>
-                <img src={Listrik} alt="Listrik" className='w-10' />
-                <p className='text-lg font-semibold'>Listrik Prabayar</p>
+                <img src={service.icon} alt="Listrik" className='w-10' />
+                <p className='text-lg font-semibold'>{service.title}</p>
             </div>
             <form onSubmit={handleSubmit} className='mt-4'>
                 <TextInput
@@ -30,8 +64,8 @@ const Payment = () => {
                     inputMode='numeric'
                     pattern='[0-9]*'
                     placeholder="Nominal"
-                    value={amount}
-                    onChange={handleAmountChange}
+                    defaultValue={amount}
+                    readOnly
                     required />
                 <button
                     type="submit"
@@ -40,6 +74,18 @@ const Payment = () => {
                     Bayar
                 </button>
             </form>
+            {showPopup && (
+                <PopupPayment
+                    service={service}
+                    amount={amount}
+                    paymentStatus={paymentStatus}
+                    onConfirm={handleConfirmPayment}
+                    onCancel={() => {
+                        setShowPopup(false);
+                        setPaymentStatus(null);
+                    }}
+                />
+            )}
         </section>
     );
 }

@@ -5,6 +5,9 @@ import RegistrationPage from "./pages/Registration"
 import ProtectedRoutes from "./routes/ProtectedRoutes"
 import ContentHome from "./components/ContentHome"
 import Payment from "./pages/Payment"
+import TopupPage from "./pages/Topup"
+import TransactionPage from "./pages/Transaction"
+import AccountPage from "./pages/Account"
 
 const router = createBrowserRouter([
   {
@@ -28,11 +31,23 @@ const router = createBrowserRouter([
             index: true
           },
           {
-            path: "/pbb",
+            path: "/topup",
+            element: <TopupPage />,
+          },
+          {
+            path: "/transaction",
+            element: <TransactionPage />,
+          },
+          {
+            path: "/payment/:serviceCode",
             element: <Payment />,
           }
         ]
-      }
+      },
+      {
+        path: "/account",
+        element: <AccountPage />,
+      },
     ]
   },
 ])

@@ -5,7 +5,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { getBalance, getUser } from '../api/user';
 
 const HeaderHome = () => {
-    const [isBalanceVisible, setIsBalanceVisible] = useState(false);
+    const [isBalanceVisible, setIsBalanceVisible] = useState(true);
     const [user, setUser] = useState(null);
     const [balance, setBalance] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -22,10 +22,8 @@ const HeaderHome = () => {
                     console.error(response.message);
                     return;
                 }
-                const token = response.data.token;
                 setUser(response.data);
-                const balance = await getBalance(token);
-                setBalance(balance);
+                fetchBalance(response.data.token);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             } finally {
@@ -33,8 +31,22 @@ const HeaderHome = () => {
             }
         };
 
+        const fetchBalance = async (token) => {
+            try {
+                const balanceData = await getBalance(token);
+                setBalance(balanceData.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
+            } catch (error) {
+                console.error('Error fetching balance:', error);
+            }
+        };
         fetchUserData();
-    }, []);
+        const intervalId = setInterval(() => {
+            if (user) {
+                fetchBalance(user.token);
+            }
+        }, 30000);
+        return () => clearInterval(intervalId);
+    }, [user]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -52,7 +64,7 @@ const HeaderHome = () => {
                 style={{ backgroundImage: `url(${Background})`, backgroundSize: 'cover' }}
             >
                 <p className='text-lg'>Saldo Anda</p>
-                <p className='text-5xl font-medium my-3'>{isBalanceVisible ? `Rp. ${balance.toLocaleString()}` : '********'}</p>
+                <p className='text-5xl font-medium my-3'>{isBalanceVisible ? `${balance}` : '********'}</p>
                 <div className='bg-[#F13B2F] max-w-60 p-1 flex items-center justify-between rounded'>
                     <p className="cursor-pointer text-sm flex items-center gap-3" onClick={toggleBalanceVisibility}>
                         Lihat Saldo {isBalanceVisible ? <FaEyeSlash /> : <FaEye />}
