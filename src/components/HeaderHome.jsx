@@ -24,7 +24,7 @@ const HeaderHome = () => {
                     </>
                 ) : (
                     <>
-                        <img src={Photo} alt="Profile Photo" />
+                        <img className='rounded-full size-28' src={user.profile_image || Photo} alt="Profile Photo" />
                         <p className="text-secondary text-lg mt-4">Selamat Datang,</p>
                         <p className="text-4xl font-semibold">{user.first_name} {user.last_name}</p>
                     </>
