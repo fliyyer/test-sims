@@ -4,6 +4,7 @@ import TextInput from '../components/TextInput';
 import { useParams } from 'react-router-dom';
 import { getBalance, getServices, submitTransaction } from '../api/user';
 import PopupPayment from '../components/PopupPayment';
+import MetaTag from '../layouts/MetaTag';
 
 const Payment = ({ token }) => {
     const { serviceCode } = useParams();
@@ -52,6 +53,7 @@ const Payment = ({ token }) => {
 
     return (
         <section>
+            <MetaTag title={`Pembayaran ${service.title}`} description={`Pembayaran ${service.title}`} />
             <p className='text-lg text-secondary'>Pembayaran</p>
             <div className='flex gap-4 items-center'>
                 <img src={service.icon} alt="Listrik" className='w-10' />

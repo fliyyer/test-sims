@@ -23,6 +23,10 @@ export const login = async (login) => {
 
     const response = await POST('/login', login);
 
+    if (response.status === 103) {
+        throw new Error('Username atau password salah');
+    }
+
     if (response.status === 0 && response.data && response.data.token) {
         Cookies.set('token', response.data.token, { expires: 1/2 }); 
     }

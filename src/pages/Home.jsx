@@ -1,17 +1,16 @@
-import { Fragment } from "react"
-import Navbar from "../components/Navbar"
 import HeaderHome from "../components/HeaderHome"
 import { Outlet } from "react-router-dom"
+import ContainerLayout from "../layouts/ContainerLayout"
+import MetaTag from "../layouts/MetaTag"
 
 const HomePage = () => {
+
     return (
-        <Fragment>
-            <Navbar />
-            <main className="w-full max-w-7xl mx-auto">
-                <HeaderHome />
-                <Outlet />
-            </main>
-        </Fragment>
+        <ContainerLayout>
+            <MetaTag title="Welcome SIMS PPOB" description="Home" />
+            <HeaderHome />
+            <Outlet />
+        </ContainerLayout>
     )
 }
 

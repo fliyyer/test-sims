@@ -4,7 +4,7 @@ import TextInput from '../components/TextInput';
 import { FaAt } from 'react-icons/fa6';
 import AuthLayout from '../layouts/AuthLayout';
 import { register } from '../api/authService';
-import ErrorNotify from '../components/ErrorNotify';
+import { ErrorNotify } from '../components/Notification';
 
 const RegistrationPage = () => {
     const [formRegist, setformRegist] = useState({

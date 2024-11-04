@@ -4,8 +4,8 @@ import AuthLayout from '../layouts/AuthLayout';
 import TextInput from '../components/TextInput';
 import PasswordInput from '../components/PasswordInput';
 import { login } from '../api/authService';
-import ErrorNotify from '../components/ErrorNotify';
 import { useNavigate } from 'react-router-dom';
+import { ErrorNotify } from '../components/Notification';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -18,6 +18,8 @@ const LoginPage = () => {
         success: '',
         showErrorNotify: false
     });
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,6 +43,8 @@ const LoginPage = () => {
                 success: '',
                 showErrorNotify: true
             });
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -65,10 +69,11 @@ const LoginPage = () => {
                     required
                 />
                 <button
+                    disabled={isLoading}
                     type="submit"
                     className="w-full py-3 bg-primary text-white rounded-lg hover:bg-red-600 transition-colors"
                 >
-                    Login
+                    {isLoading ? 'Login...' : 'Login'}
                 </button>
                 {notify.success && <p className="text-green-500 text-sm text-center">{notify.success}</p>}
                 <p className='text-center text-sm text-gray-400'>

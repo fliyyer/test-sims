@@ -1,4 +1,6 @@
-import { GET, POST } from "./apiHandler";
+import axios from "axios";
+import { GET, POST, PUT } from "./apiHandler";
+import { getToken } from "../utils/token";
 
 export const getUser = async () => {
     const response = await GET('profile'); 
@@ -9,6 +11,61 @@ export const getUser = async () => {
 
     return response;
 };
+
+export const updateUserProfile = async (token, firstName, lastName) => {
+    try {
+        const response = await PUT(
+            'profile/update',
+            {
+                first_name: firstName,
+                last_name: lastName,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+        if (response.status === 0) {
+            return response.data;
+        } else {
+            throw new Error(response.message || "Profile update failed.");
+        }
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        throw error;
+    }
+};
+
+export const updateProfileImage = async (file) => {
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const response = await axios.put(
+            'https://take-home-test-api.nutech-integrasi.com/profile/image',
+            formData,
+            {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`,
+                    Accept: "application/json"
+                }
+            }
+        );
+        if (response.data.status === 0) {
+            console.log("Update Profile Image berhasil:", response.data);
+            return response.data;
+        } else {
+            throw new Error(response.data.message || "Profile image update failed.");
+        }
+    } catch (error) {
+        console.error("Error updating profile image:", error);
+        throw error;
+    }
+};
+
+
 
 export const getBanner = async () => {
     try {
@@ -117,9 +174,9 @@ export const topup = async (amount, token) => {
     }
 }
 
-export const getTransactionHistory = async (token, limit) => {
+export const getTransactionHistory = async (token, limit, offset) => {
     try {
-        const queryParams = limit ? `?limit=${limit}` : ''; 
+        const queryParams = `?limit=${limit}&offset=${offset}`; 
         const response = await GET(`transaction/history${queryParams}`, {
             headers: {
                 Authorization: `Bearer ${token}`, 

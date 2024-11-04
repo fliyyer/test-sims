@@ -1,27 +1,29 @@
 import { Fragment, useEffect, useState } from 'react';
 import { getTransactionHistory } from '../api/user';
+import MetaTag from '../layouts/MetaTag';
+import SkeletonLoader from '../components/SkeletonLoader'; // Ensure to import the SkeletonLoader component
 
 const TransactionPage = ({ token }) => {
     const [transactions, setTransactions] = useState([]);
     const [filteredTransactions, setFilteredTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [visibleCount, setVisibleCount] = useState(10);
     const [selectedMonth, setSelectedMonth] = useState(0);
+    const [offset, setOffset] = useState(0);
 
     useEffect(() => {
-        const fetchTransactionHistory = async () => {
+        const fetchTransactionHistory = async (currentOffset) => {
             try {
-                const transactionData = await getTransactionHistory(token, 25);
-                setTransactions(transactionData);
-                setFilteredTransactions(transactionData.slice(0, visibleCount));
+                const transactionData = await getTransactionHistory(token, 5, currentOffset);
+                setTransactions((prevTransaction) => [...prevTransaction, ...transactionData]);
+                setFilteredTransactions((prevFiltered) => [...prevFiltered, ...transactionData]);
             } catch (error) {
                 console.error("Error fetching transaction history:", error);
             } finally {
                 setLoading(false);
             }
         };
-        fetchTransactionHistory();
-    }, [token, visibleCount]);
+        fetchTransactionHistory(offset);
+    }, [token, offset]);
 
     const filterByMonth = (monthOffset) => {
         setSelectedMonth(monthOffset);
@@ -38,17 +40,14 @@ const TransactionPage = ({ token }) => {
     };
 
     const loadMoreTransactions = () => {
-        setVisibleCount((prevCount) => prevCount + 10);
+        setOffset((prevOffset) => prevOffset + 5);
     };
-
-    if (loading) return <p>Loading transactions...</p>;
 
     return (
         <Fragment>
+            <MetaTag title="Transaksi" description="Riwayat Transaksi" />
             <main className="max-w-7xl w-full my-10 mx-auto">
                 <p className="text-2xl font-medium">Semua Transaksi</p>
-
-                {/* Month Filter Menu */}
                 <div className="flex space-x-4 mt-4">
                     {[...Array(6)].map((_, index) => {
                         const date = new Date();
@@ -68,7 +67,14 @@ const TransactionPage = ({ token }) => {
                 </div>
 
                 <div className="mt-6">
-                    {filteredTransactions.length > 0 ? (
+                    {loading ? (
+                        Array.from({ length: 5 }).map((_, index) => (
+                            <div key={index} className="flex justify-between items-start py-6 px-8 border-[1px] rounded-lg border-gray-300 mb-5">
+                                <SkeletonLoader type="text" count={1} height={24} width={150} />
+                                <SkeletonLoader type="text" count={1} height={24} width={200} />
+                            </div>
+                        ))
+                    ) : filteredTransactions.length > 0 ? (
                         filteredTransactions.map((transaction, index) => (
                             <div
                                 key={index}
@@ -89,8 +95,7 @@ const TransactionPage = ({ token }) => {
                         <p className="text-gray-500 text-center mt-16">Maaf, tidak ada histori transaksi bulan ini.</p>
                     )}
                 </div>
-
-                {filteredTransactions.length > 0 && visibleCount < transactions.length && (
+                {filteredTransactions.length > 0 && (
                     <div className="text-center mt-6">
                         <button
                             onClick={loadMoreTransactions}

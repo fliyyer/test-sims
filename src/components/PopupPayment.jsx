@@ -103,7 +103,7 @@ const PopupPayment = ({ service, amount, paymentStatus, onConfirm, onCancel, typ
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 };
 
