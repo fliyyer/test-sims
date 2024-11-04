@@ -17,3 +17,10 @@ body {
   background-color: #F42619;
   border-radius: 2px;
 }
+
+.image-slider img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+

@@ -4,7 +4,7 @@ import Logo from '../assets/icons/Logo.png';
 const AuthLayout = ({ title, children }) => {
     return (
         <div className="flex h-screen overflow-hidden">
-            <div className="w-[45%] flex flex-col justify-center items-center p-8 bg-gray-100">
+            <div className="w-full md:w-[45%] flex flex-col justify-center items-center p-8 bg-gray-100">
                 <div className='flex flex-col items-center'>
                     <div className='flex items-center gap-2'>
                         <img src={Logo} alt="Logo" />
@@ -16,7 +16,7 @@ const AuthLayout = ({ title, children }) => {
                     {children}
                 </div>
             </div>
-            <div className="w-[55%] bg-[#fff1f0] flex items-center justify-center">
+            <div className="hidden md:flex w-[55%] bg-[#fff1f0] items-center justify-center">
                 <img src={Background} alt="Background" className="object-cover w-[70%]" />
             </div>
         </div>

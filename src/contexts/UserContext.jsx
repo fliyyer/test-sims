@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { getBalance, getUser } from '../api/user';
+import { getToken } from '../utils/token';
 
 const UserContext = createContext();
 
@@ -11,13 +12,19 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await getUser();
+                const token = getToken();
+                if (!token) {
+                    console.error('Token not found');
+                    return;
+                }
+
+                const response = await getUser(token); // Kirim token ke API
                 if (response.success === false) {
                     console.error(response.message);
                     return;
                 }
+
                 setUser(response.data);
-                const token = response.data.token;
                 const balance = await getBalance(token);
                 setBalance(balance.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
             } catch (error) {
@@ -38,4 +45,3 @@ export const UserProvider = ({ children }) => {
 };
 
 export const useUser = () => useContext(UserContext);
-

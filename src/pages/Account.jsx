@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import PhotoProfile from '../assets/icons/Profile Photo.png';
 import TextInput from '../components/TextInput';
@@ -26,6 +26,19 @@ const AccountPage = ({ token }) => {
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(users.profileImage);
     const [imageFileSizeValid, setImageFileSizeValid] = useState(true);
+    const { notification, notify } = useNotification();
+
+    useEffect(() => {
+        if (user) {
+            setUsers({
+                firstName: user.first_name,
+                lastName: user.last_name,
+                email: user.email,
+                profileImage: user.profile_image || PhotoProfile,
+            });
+            setImagePreview(user.profile_image || PhotoProfile);
+        }
+    }, [user]);
 
     const handleEditToggle = () => {
         setEditing(!editing);
@@ -34,7 +47,6 @@ const AccountPage = ({ token }) => {
         }
     };
 
-    const { notification, notify } = useNotification();
     const handleSubmit = async () => {
         try {
             await updateUserProfile(token, users.firstName, users.lastName);
@@ -47,14 +59,12 @@ const AccountPage = ({ token }) => {
             }
             setEditing(false);
             notify('Profile updated successfully!', 'success');
+            window.location.reload();
         } catch (error) {
             console.error("Error saving profile:", error);
             notify(error.message || 'An error occurred while updating the profile.', 'error');
         }
     };
-
-
-
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -67,7 +77,6 @@ const AccountPage = ({ token }) => {
                     setImagePreview(reader.result);
                 };
                 reader.readAsDataURL(file);
-                console.log(file);
             } else {
                 setImageFileSizeValid(false);
                 alert("Only JPEG and PNG formats under 100KB are allowed.");
@@ -90,7 +99,7 @@ const AccountPage = ({ token }) => {
         <Fragment>
             <MetaTag title={`Account | ${users.firstName}`} description="Manage your account settings, update profile information, and more." />
             <Navbar />
-            <main className="w-full max-w-7xl mx-auto flex flex-col">
+            <main className="w-full px-4 md:px-0 md:max-w-7xl mx-auto flex flex-col">
                 <div className="flex flex-col items-center max-w-3xl py-6 w-full mx-auto">
                     <div className='relative'>
                         <img

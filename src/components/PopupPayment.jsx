@@ -2,8 +2,10 @@ import Logo from '../assets/icons/Logo.png';
 import { IoMdClose } from "react-icons/io";
 import { FaCheck } from "react-icons/fa6";
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PopupPayment = ({ service, amount, paymentStatus, onConfirm, onCancel, type }) => {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [progress, setProgress] = useState(0);
 
@@ -18,13 +20,18 @@ const PopupPayment = ({ service, amount, paymentStatus, onConfirm, onCancel, typ
                 }
                 return prev + 10;
             });
-        }, 800);
+        }, 1500);
 
         setTimeout(() => {
             onConfirm();
             setLoading(false);
             clearInterval(interval);
-        }, 800);
+        }, 1500);
+    };
+
+    const handleBackToHome = () => {
+        navigate('/');
+        window.location.reload();
     };
 
     return (
@@ -76,7 +83,7 @@ const PopupPayment = ({ service, amount, paymentStatus, onConfirm, onCancel, typ
                         <p className="text-3xl text-secondary font-bold my-2">Rp{amount.toLocaleString('id-ID')}</p>
                         <span>berhasil</span>
                         <button
-                            onClick={onCancel}
+                            onClick={handleBackToHome}
                             className="mt-5 text-primary font-medium px-4 py-2 rounded-md hover:text-red-600"
                         >
                             Kembali ke Beranda
@@ -95,7 +102,7 @@ const PopupPayment = ({ service, amount, paymentStatus, onConfirm, onCancel, typ
                         <p className="text-3xl text-secondary font-bold my-2">Rp{amount.toLocaleString('id-ID')}</p>
                         <span>gagal</span>
                         <button
-                            onClick={onCancel}
+                            onClick={handleBackToHome}
                             className="mt-5 text-primary font-medium px-4 py-2 rounded-md hover:text-red-600"
                         >
                             Kembali ke Beranda

@@ -54,11 +54,11 @@ const TopupPage = ({ token }) => {
     return (
         <Fragment>
             <MetaTag title="Top Up" description="Top Up SIMS PPOB" />
-            <main className="max-w-7xl w-full my-10 mx-auto">
+            <main className="max-w-7xl px-4 md:px-0 w-full my-10 mx-auto">
                 <p className="text-xl">Silahkan Masukan</p>
                 <p className="text-3xl font-bold mt-1">Nominal Top Up</p>
-                <section className="flex my-10 gap-8 items-center">
-                    <form className="w-2/3" onSubmit={handleSubmit}>
+                <section className="flex flex-col md:flex-row my-5 md:my-10 gap-8 items-center">
+                    <form className="w-full md:w-2/3" onSubmit={handleSubmit}>
                         <TextInput
                             type="text"
                             icon={MdOutlineMoney}
@@ -81,7 +81,7 @@ const TopupPage = ({ token }) => {
                             Bayar
                         </button>
                     </form>
-                    <div className="w-1/3 grid grid-cols-3 gap-4">
+                    <div className="w-full md:w-1/3 grid grid-cols-3 gap-4">
                         {[10000, 20000, 50000, 100000, 250000, 500000].map((value) => (
                             <button
                                 key={value}

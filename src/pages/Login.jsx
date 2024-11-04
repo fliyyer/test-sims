@@ -4,7 +4,7 @@ import AuthLayout from '../layouts/AuthLayout';
 import TextInput from '../components/TextInput';
 import PasswordInput from '../components/PasswordInput';
 import { login } from '../api/authService';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ErrorNotify } from '../components/Notification';
 
 const LoginPage = () => {
@@ -77,7 +77,9 @@ const LoginPage = () => {
                 </button>
                 {notify.success && <p className="text-green-500 text-sm text-center">{notify.success}</p>}
                 <p className='text-center text-sm text-gray-400'>
-                    Belum punya akun? <span className="text-primary cursor-pointer">Daftar disini</span>
+                    Belum punya akun? <span className="text-primary cursor-pointer">
+                        <Link to="/register">Daftar disini</Link>
+                    </span>
                 </p>
             </form>
             <ErrorNotify

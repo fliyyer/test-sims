@@ -5,6 +5,7 @@ import { FaAt } from 'react-icons/fa6';
 import AuthLayout from '../layouts/AuthLayout';
 import { register } from '../api/authService';
 import { ErrorNotify } from '../components/Notification';
+import { Link } from 'react-router-dom';
 
 const RegistrationPage = () => {
     const [formRegist, setformRegist] = useState({
@@ -98,7 +99,9 @@ const RegistrationPage = () => {
                 </button>
                 {notify.success && <p className="text-green-500 text-sm text-center">{notify.success}</p>}
                 <p className='text-center text-sm text-gray-400'>
-                    Sudah punya akun? <span className="text-primary cursor-pointer">Login disini</span>
+                    Sudah punya akun? <span className="text-primary cursor-pointer">
+                        <Link to="/login">Login disini</Link>
+                    </span>
                 </p>
             </form>
             <ErrorNotify

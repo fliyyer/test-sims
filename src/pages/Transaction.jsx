@@ -46,9 +46,9 @@ const TransactionPage = ({ token }) => {
     return (
         <Fragment>
             <MetaTag title="Transaksi" description="Riwayat Transaksi" />
-            <main className="max-w-7xl w-full my-10 mx-auto">
+            <main className="max-w-7xl px-4 md:px-0 w-full my-10 mx-auto">
                 <p className="text-2xl font-medium">Semua Transaksi</p>
-                <div className="flex space-x-4 mt-4">
+                <div className="flex overflow-auto scrollbar-hide space-x-4 mt-4">
                     {[...Array(6)].map((_, index) => {
                         const date = new Date();
                         date.setMonth(date.getMonth() - index);
@@ -78,7 +78,7 @@ const TransactionPage = ({ token }) => {
                         filteredTransactions.map((transaction, index) => (
                             <div
                                 key={index}
-                                className="flex justify-between items-start py-6 px-8 border-[1px] rounded-lg border-gray-300 mb-5"
+                                className="flex justify-between items-start py-5 md:py-6 px-3 md:px-8 border-[1px] rounded-lg border-gray-300 mb-5"
                             >
                                 <div className="flex flex-col">
                                     <p className={`font-semibold text-2xl ${transaction.transaction_type === "TOPUP" ? 'text-green-500' : 'text-primary'}`}>

@@ -14,13 +14,13 @@ const HeaderHome = () => {
     };
 
     return (
-        <header className="py-4 mt-8 w-full flex flex-col md:flex-row">
-            <div className="w-2/5 flex-1 flex flex-col items-start">
+        <header className="py-4 px-4 md:px-0 mt-2 md:mt-8 w-full flex flex-col md:flex-row">
+            <div className="w-full md:w-2/5 flex flex-col items-center md:items-start">
                 {loading ? (
                     <>
-                        <SkeletonLoader type="circle" height={50} />
+                        <SkeletonLoader type="circle" height={112} />
                         <SkeletonLoader type="text" count={1} height={20} width={150} className="mt-4" />
-                        <SkeletonLoader type="text" count={1} height={30} width={200} className="mt-2" />
+                        <SkeletonLoader type="text" count={1} height={50} width={200} className="mt-2" />
                     </>
                 ) : (
                     <>
@@ -31,19 +31,19 @@ const HeaderHome = () => {
                 )}
             </div>
             <div
-                className="p-5 w-[57%] text-white rounded-2xl flex flex-col items-start ml-4"
+                className="w-full md:w-[57%] text-white rounded-2xl flex flex-col items-start p-5 mt-4 md:mt-0"
                 style={{ backgroundImage: `url(${Background})`, backgroundSize: 'cover' }}
             >
                 {loading ? (
                     <>
-                        <SkeletonLoader type="text" count={1} height={20} width={100} />
-                        <SkeletonLoader type="text" count={1} height={40} width={150} className="my-3" />
+                        <SkeletonLoader type="text" count={1} height={30} width={100} />
+                        <SkeletonLoader type="text" count={1} height={50} width={150} className="my-3" />
                     </>
                 ) : (
                     <>
                         <p className='text-lg'>Saldo Anda</p>
                         <p className='text-5xl font-medium my-3'>{isBalanceVisible ? `${balance}` : '********'}</p>
-                        <div className='bg-[#F13B2F] max-w-60 p-1 flex items-center justify-between rounded'>
+                        <div className='bg-[#F13B2F] w-32 py-3 flex items-center justify-between rounded'>
                             <p className="cursor-pointer text-sm flex items-center gap-3" onClick={toggleBalanceVisibility}>
                                 Lihat Saldo {isBalanceVisible ? <FaEyeSlash /> : <FaEye />}
                             </p>
