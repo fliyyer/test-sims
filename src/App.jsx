@@ -8,8 +8,6 @@ import Payment from "./pages/Payment"
 import TopupPage from "./pages/Topup"
 import TransactionPage from "./pages/Transaction"
 import AccountPage from "./pages/Account"
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 const router = createBrowserRouter([
   {

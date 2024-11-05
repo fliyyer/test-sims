@@ -1,6 +1,5 @@
 import axios from "axios";
 import { GET, POST, PUT } from "./apiHandler";
-import { getToken } from "../utils/token";
 
 export const getUser = async () => {
     const response = await GET('profile'); 
@@ -39,16 +38,16 @@ export const updateUserProfile = async (token, firstName, lastName) => {
     }
 };
 
-export const updateProfileImage = async (file) => {
+export const updateProfileImage = async (file, token) => {
     try {
         const formData = new FormData();
         formData.append('file', file);
         const response = await axios.put(
-            'https://take-home-test-api.nutech-integrasi.com/profile/image',
+            `${import.meta.env.VITE_BASE_URL}/profile/image`,
             formData,
             {
                 headers: {
-                    Authorization: `Bearer ${getToken()}`,
+                    Authorization: `Bearer ${token}`,
                     Accept: "application/json"
                 }
             }
